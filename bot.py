@@ -47,5 +47,5 @@ def main():
     print("Bot berjalan... Tekan Ctrl+C untuk berhenti.")
     app.run_polling()
 
-if __name__ = "__main__"
+if __name__ == "__main__"
     main()
