@@ -4,7 +4,7 @@ from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, ContextTypes, filters
 import google.generativeai as genai
 
-BOT_TOKEN = "8039690445:AAG38YkaKel09yV7em1Q97fENwzQWyV7N_8"
+BOT_TOKEN = "8039690445:AAG38YkaKel09yV7em1Q97fENwzQWyV7N_8" 
 GEMINI_API_KEY = "AIzaSyDbhLv968qzBUj2PlVneAe_oIymRl74IRM"
 
 
@@ -17,7 +17,7 @@ except Exception as e:
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Halo! Saya Ravchell famili dari koala. Kirimkan saya pertanyaan apa saja.")
+    await update.message.reply_text("Halo! Saya Ravchell Famili dari Koala. Kirimkan saya pertanyaan apa saja.")
 
 def get_gemini_reply(prompt: str) -> str:
     try:
@@ -32,10 +32,11 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
 
-
-    reply = await asyncio.to_thread(get_gemini_reply, question)
     
-    await update.message.reply_text(reply)
+    reply = await asyncio.to_thread(get_gemini_reply, question)
+    cleaned_reply = reply.replace('**', '').replace('*', '')
+    
+    await update.message.reply_text(cleaned_reply)
 
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -46,5 +47,5 @@ def main():
     print("Bot berjalan... Tekan Ctrl+C untuk berhenti.")
     app.run_polling()
 
-if __name__ == "__main__":
+if __name__ = "__main__"
     main()
