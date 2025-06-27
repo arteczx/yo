@@ -7,14 +7,12 @@ import google.generativeai as genai
 BOT_TOKEN = "8039690445:AAG38YkaKel09yV7em1Q97fENwzQWyV7N_8" 
 GEMINI_API_KEY = "AIzaSyDbhLv968qzBUj2PlVneAe_oIymRl74IRM"
 
-
 try:
     genai.configure(api_key=GEMINI_API_KEY)
     model = genai.GenerativeModel('gemini-2.5-flash')
 except Exception as e:
     print(f"Error: {e}")
     exit()
-
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text("Halo! Saya Ravchell Famili dari Koala. Kirimkan saya pertanyaan apa saja.")
@@ -32,11 +30,25 @@ async def handle_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await context.bot.send_chat_action(chat_id=update.effective_chat.id, action="typing")
 
-    
     reply = await asyncio.to_thread(get_gemini_reply, question)
     cleaned_reply = reply.replace('**', '').replace('*', '')
     
-    await update.message.reply_text(cleaned_reply)
+    MAX_MESSAGE_LENGTH = 4096
+
+    if len(cleaned_reply) > MAX_MESSAGE_LENGTH:
+        for i in range(0, len(cleaned_reply), MAX_MESSAGE_LENGTH):
+            part = cleaned_reply[i:i + MAX_MESSAGE_LENGTH]
+            try:
+                await update.message.reply_text(part)
+            except Exception as e:
+                print(f"Gagal mengirim bagian pesan: {e}")
+                await update.message.reply_text(f"Terjadi error saat mengirim balasan: {e}")
+    else:
+        try:
+            await update.message.reply_text(cleaned_reply)
+        except Exception as e:
+            print(f"Gagal mengirim pesan: {e}")
+            await update.message.reply_text(f"Terjadi error saat mengirim balasan: {e}")
 
 def main():
     app = ApplicationBuilder().token(BOT_TOKEN).build()
@@ -49,3 +61,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
