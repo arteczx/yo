@@ -17,7 +17,7 @@ except Exception as e:
 
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    await update.message.reply_text("Halo! Saya bot AI yang ditenagai oleh Gemini. Kirimkan saya pertanyaan apa saja.")
+    await update.message.reply_text("Halo! Saya Ravchell famili dari koala. Kirimkan saya pertanyaan apa saja.")
 
 def get_gemini_reply(prompt: str) -> str:
     try:
